@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ParseContabil.Domain.Entities;
+using ParseContabil.Infrastructure.Seeds;
 
 namespace ParseContabil.Infrastructure.Mapping
 {
@@ -12,7 +13,7 @@ namespace ParseContabil.Infrastructure.Mapping
             builder.HasMany(r => r.Templates)
                 .WithOne(t => t.RecordType)
                 .HasForeignKey(t => t.RecordTypeId);
-
+            builder.HasData(SeedParse.Seeds().recordTypes);
             builder.ToTable("RecordTypes");
         }
     }

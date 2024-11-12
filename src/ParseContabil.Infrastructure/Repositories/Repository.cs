@@ -16,12 +16,26 @@ namespace ParseContabil.Infrastructure.Repositories
             Context = context;
             DbSet = context.Set<TEntity>();
         }
+
         public async Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate)
         => await DbSet.AsNoTracking().Where(predicate).ToListAsync();
 
-        public void Dispose()
+        public async Task AddAsync(TEntity entity, bool saveChanges = true)
         {
-            throw new NotImplementedException();
+            await DbSet.AddAsync(entity);
+            await SaveChangesAsync(saveChanges);
         }
+
+        public async Task UpdateAsync(TEntity entity, bool saveChanges = true)
+        {
+            DbSet.Update(entity);
+            await SaveChangesAsync(saveChanges);
+        }
+
+        public async Task<int> SaveChangesAsync(bool saveChanges = true)
+            =>  saveChanges ?  await Context.SaveChangesAsync() : 0;
+        
+        public void Dispose()
+            => Context.Dispose();
     }
 }

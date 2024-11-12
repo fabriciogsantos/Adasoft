@@ -1,6 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ParseContabil.Domain.Dtos;
+using ParseContabil.Domain.Interfaces.Repositories;
+using ParseContabil.Domain.Interfaces.Services;
+using ParseContabil.Domain.Services;
 using ParseContabil.Infrastructure.Context;
+using ParseContabil.Infrastructure.Repositories;
 
 namespace ParseContabil.Worker.Extensions.HostBuilderExtensions
 {
@@ -11,10 +16,15 @@ namespace ParseContabil.Worker.Extensions.HostBuilderExtensions
             services.AddHostedService<Worker>();
             services.AddDbContext<ParseContabilContext>(options =>
             {
-                options.UseSqlServer(context.Configuration.GetConnectionString("ParseContabilConnection"));
+                options.UseSqlServer(context.Configuration.GetConnectionString("ParseContabilConnection")!);
             });
-
+            
             services.Configure<Configuration>(context.Configuration.GetSection("Configurations"));
+            services.AddHealthChecks().AddCheck("Worker Health Check", () => HealthCheckResult.Healthy("Worker is running."));
+
+            services.AddScoped<IRecordTypeRepository, RecordTypeRepository>();
+            services.AddScoped<IProcessTaskLogRepository, ProcessTaskLogRepository>();
+            services.AddScoped<IParserService, ParserService>();
             return services;
         }
     }

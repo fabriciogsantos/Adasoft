@@ -3,7 +3,7 @@ using ParseContabil.Worker.Extensions.HostBuilderExtensions;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context,services) => services.ConfigureServices(context))
     .UseContentRoot(Directory.GetCurrentDirectory())
-    .RegisterDependencies()
+    .ConfigureServices()
     .Build();
 
 await host.RunAsync();

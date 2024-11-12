@@ -10,6 +10,6 @@ namespace ParseContabil.Infrastructure.Repositories
         public RecordTypeRepository(ParseContabilContext context) : base(context) { }
 
         public async Task<List<RecordType>> GetAllAsync()
-            => await DbSet.AsNoTracking().Include(r => r.Templates).ToListAsync();
+            => await DbSet.AsNoTracking().Include(r => r.Templates!.OrderBy(t=>t.Order)).ToListAsync();
     }
 }
