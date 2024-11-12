@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ParseContabil.Infrastructure.Context;
 
@@ -11,9 +12,10 @@ using ParseContabil.Infrastructure.Context;
 namespace ParseContabil.Infrastructure.Migrations
 {
     [DbContext(typeof(ParseContabilContext))]
-    partial class ParseContabilContextModelSnapshot : ModelSnapshot
+    [Migration("20241112231323_fixErrorTemplate")]
+    partial class fixErrorTemplate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

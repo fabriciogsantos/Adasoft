@@ -41,7 +41,7 @@ namespace ParseContabil.Domain.Services
                     await _filesHandlerWrapper.GenerateFilesOutputAsync(filesOutput, _configurationOptions.Value.PathOutput);
 
                 processTask.Status = (short)TaskStatus.RanToCompletion;
-                processTask.Result = string.Format(Messages.CountFilesGenrated);
+                processTask.Result = string.Format(Messages.CountFilesGenrated, filesOutput.Count);
             }
             catch (Exception ex)
             {
@@ -88,17 +88,25 @@ namespace ParseContabil.Domain.Services
         private StringBuilder StartFile(List<string?> heads)
             => new(string.Concat(string.Join(Delimiter, heads), Environment.NewLine));
        
-        private static string ParseLine(IEnumerable<Template> templates, string line)
+        private string ParseLine(IEnumerable<Template> templates, string line)
         {
-            var lineFile = new List<string>();
-            var position = 0;
-            foreach (var template in templates) 
+            try
             {
-                lineFile.Add(line.Substring(position,template.Size));
-                position += template.Size;
-            }
+                var lineFile = new List<string>();
+                var position = 0;
+                foreach (var template in templates)
+                {
+                    lineFile.Add(line.Substring(position, template.Size));
+                    position += template.Size;
+                }
 
-            return string.Join(Delimiter, lineFile);
+                return string.Join(Delimiter, lineFile);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw;
+            }
         }
     }
 }
