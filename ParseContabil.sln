@@ -3,17 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseContabil.Worker", "src\ParseContabil.Worker\ParseContabil.Worker.csproj", "{705C5315-11FE-46AF-9C8E-882E3AF58CF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParseContabil.Worker", "src\ParseContabil.Worker\ParseContabil.Worker.csproj", "{705C5315-11FE-46AF-9C8E-882E3AF58CF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseContabil.Domain", "src\ParseContabil.Domain\ParseContabil.Domain.csproj", "{FCD86CBD-6CC2-4352-A861-C11AC505DFD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParseContabil.Domain", "src\ParseContabil.Domain\ParseContabil.Domain.csproj", "{FCD86CBD-6CC2-4352-A861-C11AC505DFD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseContabil.Infrastructure", "src\ParseContabil.Infrastructure\ParseContabil.Infrastructure.csproj", "{D4559913-515C-4C88-AA20-686176EC01C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParseContabil.Infrastructure", "src\ParseContabil.Infrastructure\ParseContabil.Infrastructure.csproj", "{D4559913-515C-4C88-AA20-686176EC01C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 - Worker", "00 - Worker", "{55461968-118A-4B6F-A676-113CB9A8939A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - Domain", "01 - Domain", "{53CC79E0-A640-4D20-A441-4A71B8D79010}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 - Iinfrastructure", "02 - Iinfrastructure", "{985713C0-5073-4448-BFE1-91531BD43DC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{78618EA2-3C3C-4CFD-BC9D-4D63A4585F0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6D0172CF-4908-459A-A059-D3EB71E5F451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseContabil.DomainUnitTest", "tests\ParseContabil.DomainUnitTest\ParseContabil.DomainUnitTest.csproj", "{407579B9-07FB-48CA-8600-0AF714C003E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,10 @@ Global
 		{D4559913-515C-4C88-AA20-686176EC01C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4559913-515C-4C88-AA20-686176EC01C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4559913-515C-4C88-AA20-686176EC01C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{407579B9-07FB-48CA-8600-0AF714C003E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407579B9-07FB-48CA-8600-0AF714C003E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407579B9-07FB-48CA-8600-0AF714C003E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407579B9-07FB-48CA-8600-0AF714C003E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +51,10 @@ Global
 		{705C5315-11FE-46AF-9C8E-882E3AF58CF0} = {55461968-118A-4B6F-A676-113CB9A8939A}
 		{FCD86CBD-6CC2-4352-A861-C11AC505DFD2} = {53CC79E0-A640-4D20-A441-4A71B8D79010}
 		{D4559913-515C-4C88-AA20-686176EC01C9} = {985713C0-5073-4448-BFE1-91531BD43DC2}
+		{55461968-118A-4B6F-A676-113CB9A8939A} = {78618EA2-3C3C-4CFD-BC9D-4D63A4585F0C}
+		{53CC79E0-A640-4D20-A441-4A71B8D79010} = {78618EA2-3C3C-4CFD-BC9D-4D63A4585F0C}
+		{985713C0-5073-4448-BFE1-91531BD43DC2} = {78618EA2-3C3C-4CFD-BC9D-4D63A4585F0C}
+		{407579B9-07FB-48CA-8600-0AF714C003E3} = {6D0172CF-4908-459A-A059-D3EB71E5F451}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {221991A7-744E-4D0C-8A96-B487209A472C}

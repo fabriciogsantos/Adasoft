@@ -15,6 +15,7 @@
 
 # Mono auto generated files
 mono_crash.*
+# developConfig
 
 # Build results
 [Dd]ebug/
@@ -31,6 +32,9 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+[Ii]nput/
+[Oo]utput/
+
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -206,6 +210,9 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
+# developConfig
+**/input/
+**/output/
 # Microsoft Azure Build Output
 csx/
 *.build.csdef

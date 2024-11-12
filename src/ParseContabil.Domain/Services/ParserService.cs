@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ParseContabil.Domain.Dtos;
 using ParseContabil.Domain.Entities;
-using ParseContabil.Domain.Helpers;
 using ParseContabil.Domain.Interfaces.Repositories;
 using ParseContabil.Domain.Interfaces.Services;
+using ParseContabil.Domain.Resources;
 using System.Text;
-using Microsoft.Extensions.Logging;
 
 namespace ParseContabil.Domain.Services
 {
@@ -15,12 +15,14 @@ namespace ParseContabil.Domain.Services
         private readonly IProcessTaskLogRepository _processTaskLogRepository;
         private readonly IOptions<Configuration> _configurationOptions;
         private readonly ILogger<ParserService> _logger;
+        private readonly IFilesHandlerWrapper _filesHandlerWrapper;
         private const string Delimiter = ";";
-        public ParserService(IRecordTypeRepository recordRepository, IProcessTaskLogRepository processTaskLogRepository, IOptions<Configuration> configurationOptions, ILogger<ParserService> logger)
+        public ParserService(IRecordTypeRepository recordRepository, IProcessTaskLogRepository processTaskLogRepository, IOptions<Configuration> configurationOptions, ILogger<ParserService> logger, IFilesHandlerWrapper filesHandlerWrapper)
         {
             _recordRepository = recordRepository;
             _processTaskLogRepository = processTaskLogRepository;
             _configurationOptions = configurationOptions;
+            _filesHandlerWrapper = filesHandlerWrapper;
             _logger = logger;
         }
 
@@ -31,21 +33,21 @@ namespace ParseContabil.Domain.Services
             {
                 var filesOutput = new Dictionary<string, StringBuilder>();
                 var recordTypes = await _recordRepository.GetAllAsync();
+
                 foreach (var fileInput in filesInput)
                     filesOutput = ParseFile(fileInput, recordTypes, filesOutput);
                 
                 if (filesOutput.Any())
-                    await FilesHandler.GenerateFilesOutputAsync(filesOutput, _configurationOptions.Value.PathOutput);
+                    await _filesHandlerWrapper.GenerateFilesOutputAsync(filesOutput, _configurationOptions.Value.PathOutput);
 
                 processTask.Status = (short)TaskStatus.RanToCompletion;
-                processTask.Result = $"{filesOutput.Count} file(s) generated";
+                processTask.Result = string.Format(Messages.CountFilesGenrated);
             }
             catch (Exception ex)
             {
-                var message = string.Concat($"Error: {ex.Message}, Method :{nameof(ProcessInputFileAsync)}, {ex.StackTrace}");
                 processTask.Status = (short)TaskStatus.Faulted;
-                processTask.Result = message;
-                _logger.LogError(message,ex);
+                processTask.Result = ex.Message;
+                _logger.LogError(ex.Message, ex);
             }
             finally
             {
@@ -63,7 +65,7 @@ namespace ParseContabil.Domain.Services
                 var recordType = recordTypes.Find(r=>r.Type == type);
                 if (recordType == null)
                 {
-                    _logger.LogError($"file of type :{type} not yet configured");
+                    _logger.LogError(string.Format(Messages.FileNotConfigured,type));
                     continue;
                 }
 
@@ -71,12 +73,13 @@ namespace ParseContabil.Domain.Services
                 {
                     var lineOutput = ParseLine(recordType.Templates, line);
                     if (!filesOutput.ContainsKey(recordType.FileOutPutName!))
-                        filesOutput.Add(recordType.FileOutPutName!, StartFile(recordType.Templates.Select(t => t.Head).ToList()));
+                        filesOutput.Add(recordType.FileOutPutName!,
+                            StartFile(recordType.Templates.Select(t => t.Head).ToList()));
 
                     filesOutput[recordType.FileOutPutName!].AppendLine(lineOutput);
                 }
                 else
-                    _logger.LogError($"Templates of type :{type} not yet configured");
+                    _logger.LogError(string.Format(Messages.TemplateNotConfigured, type));
                 
             }
             return filesOutput;

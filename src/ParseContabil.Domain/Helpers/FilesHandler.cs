@@ -39,7 +39,7 @@ namespace ParseContabil.Domain.Helpers
             {
                 foreach (var file in filesOutput)
                 {
-                    var fileOutput = Path.Combine(pathOutput, file.Key);
+                    var fileOutput = Path.Combine(pathOutput, string.Concat(file.Key,"_", DateTime.Now.ToString("yyyymmddHHmmss"),".csv"));
                     await File.WriteAllTextAsync(fileOutput,file.Value.ToString());
                 }
             }
@@ -62,12 +62,12 @@ namespace ParseContabil.Domain.Helpers
             {
                 try
                 {
-                    var fileName = rename? string.Concat(Path.GetFileNameWithoutExtension(file),DateTime.Now.ToString("yyyymmddHHmmss"), Path.GetExtension(file)) : Path.GetFileName(file);
+                    var fileName = rename? string.Concat(Path.GetFileNameWithoutExtension(file), "_", DateTime.Now.ToString("yyyymmddHHmmss"), Path.GetExtension(file)) : Path.GetFileName(file);
                     File.Move(file, Path.Combine(pathDestination, fileName));
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError($"{ex.Message}",ex);
+                    logger.LogError(ex.Message,ex);
                     return false;
                 }
             }

@@ -25,6 +25,7 @@ namespace ParseContabil.Worker.Extensions.HostBuilderExtensions
             services.AddScoped<IRecordTypeRepository, RecordTypeRepository>();
             services.AddScoped<IProcessTaskLogRepository, ProcessTaskLogRepository>();
             services.AddScoped<IParserService, ParserService>();
+            services.AddScoped<IFilesHandlerWrapper, FilesHandlerWrapper>();
             return services;
         }
     }

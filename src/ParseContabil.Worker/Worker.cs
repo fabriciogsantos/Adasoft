@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using ParseContabil.Domain.Dtos;
 using ParseContabil.Domain.Helpers;
+using ParseContabil.Domain.Resources;
 using ParseContabil.Domain.Interfaces.Services;
 
 namespace ParseContabil.Worker
@@ -28,12 +29,12 @@ namespace ParseContabil.Worker
             {
                 try
                 {
-                    _logger.LogInformation("Verify files start");
+                    _logger.LogInformation(Messages.VerifyStart);
                     var filesInput = FilesHandler.GetFilesInput(pathInput);
-                    _logger.LogInformation("Verify files end");
+                    _logger.LogInformation(Messages.VerifyEnd);
                     if (filesInput.Any())
                     {
-                        _logger.LogInformation("processing files start");
+                        _logger.LogInformation(Messages.processingFileStart);
                         FilesHandler.MoveFilesProcessing(pathInput, _logger);
 
                         using var scope = _serviceProvider.CreateScope();
@@ -41,12 +42,12 @@ namespace ParseContabil.Worker
                         await parseService.ProcessInputFileAsync(filesInput);
 
                         FilesHandler.MoveFilesProcessed(pathInput, _logger);
-                        _logger.LogInformation("processing files end");
+                        _logger.LogInformation(Messages.processingFileEnd);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Erro: {ex.Message}",ex);
+                    _logger.LogError(ex.Message,ex);
                 }
             }
         }
