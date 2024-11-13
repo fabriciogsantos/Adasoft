@@ -17,6 +17,8 @@ namespace ParseContabil.Domain.Services
         private readonly ILogger<ParserService> _logger;
         private readonly IFilesHandlerWrapper _filesHandlerWrapper;
         private const string Delimiter = ";";
+        private const int PositionRecordType = 14;
+        private const int SizeLine = 510;
         public ParserService(IRecordTypeRepository recordRepository, IProcessTaskLogRepository processTaskLogRepository, IOptions<Configuration> configurationOptions, ILogger<ParserService> logger, IFilesHandlerWrapper filesHandlerWrapper)
         {
             _recordRepository = recordRepository;
@@ -61,28 +63,41 @@ namespace ParseContabil.Domain.Services
         {
             foreach (var line in fileInput.Value)
             {
-                var type = line[14];
-                var recordType = recordTypes.Find(r=>r.Type == type);
-                if (recordType == null)
-                {
-                    _logger.LogError(string.Format(Messages.FileNotConfigured,type));
+                if(!IsValidLine(line))
                     continue;
-                }
 
-                if (recordType.Templates != null)
-                {
-                    var lineOutput = ParseLine(recordType.Templates, line);
-                    if (!filesOutput.ContainsKey(recordType.FileOutPutName!))
-                        filesOutput.Add(recordType.FileOutPutName!,
-                            StartFile(recordType.Templates.Select(t => t.Head).ToList()));
+                var type = line[PositionRecordType];
+                var recordType = GetRecordType(type, recordTypes);
 
-                    filesOutput[recordType.FileOutPutName!].AppendLine(lineOutput);
-                }
-                else
-                    _logger.LogError(string.Format(Messages.TemplateNotConfigured, type));
+                if (recordType == null || recordType?.Templates == null)
+                    continue;
                 
+                var lineOutput = ParseLine(recordType.Templates, line);
+                if (!filesOutput.ContainsKey(recordType.FileOutPutName!))
+                    filesOutput.Add(recordType.FileOutPutName!, StartFile(recordType.Templates.Select(t => t.Head).ToList()));
+
+                filesOutput[recordType.FileOutPutName!].AppendLine(lineOutput);
             }
             return filesOutput;
+        }
+
+        private RecordType? GetRecordType(char type, List<RecordType> recordTypes)
+        {
+            var recordType = recordTypes.Find(r => r.Type == type);
+            if (recordType == null)
+                _logger.LogError(string.Format(Messages.FileNotConfigured, type));
+
+            if (recordType?.Templates == null)
+                _logger.LogError(string.Format(Messages.TemplateNotConfigured, type));
+            
+            return recordType;
+        }
+
+        private bool IsValidLine(string line)
+        {
+            if (line.Length == SizeLine) return true;
+            _logger.LogError(string.Format(Messages.SizeLineError, SizeLine,line.Length));
+            return false;
         }
 
         private StringBuilder StartFile(List<string?> heads)

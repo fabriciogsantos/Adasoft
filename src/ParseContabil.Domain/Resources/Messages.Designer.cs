@@ -97,6 +97,15 @@ namespace ParseContabil.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incorrect line size, expect {0} and have {1}.
+        /// </summary>
+        public static string SizeLineError {
+            get {
+                return ResourceManager.GetString("SizeLineError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Templates of type :{0} not yet configured.
         /// </summary>
         public static string TemplateNotConfigured {

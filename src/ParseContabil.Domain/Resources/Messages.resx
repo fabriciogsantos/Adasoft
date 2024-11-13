@@ -138,4 +138,7 @@
 	<data name="TemplateNotConfigured" xml:space="preserve">
     <value>Templates of type :{0} not yet configured</value>
   </data>
+  <data name="SizeLineError" xml:space="preserve">
+    <value>Incorrect line size, expect {0} and have {1}</value>
+  </data>	
 </root>

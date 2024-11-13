@@ -38,6 +38,6 @@ namespace ParseContabil.DomainUnitTest.Fixtures
         }
 
         public static Dictionary<string, string[]> GetFile()
-            => new Dictionary<string, string[]>{{ "file", new List<string>() { "400041202001010410000023070MICROSOFT ESPAÑAX OPERATION LTD          UFACTURACION TARJETA CREDITO 07+0000000105.6000                                                                                                                                                                                                                                                                                                                                                                                                        NNEN" }.ToArray() }};
+            => new Dictionary<string, string[]>{{ "file", new List<string>() { "400041202001010410000023070MICROSOFT ESPAÑAX OPERATION LTD          UFACTURACION TARJETA CREDITO 07+0000000105.6000                                                                                                                                                                                                                                                                                                                                                                                                       NNEN" }.ToArray() }};
     }
 }
