@@ -11,8 +11,6 @@ namespace ParseContabil.Infrastructure.Context
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
-        public DbSet<RecordType> RecordTypes { get; set; }
-        public DbSet<Template> Templates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

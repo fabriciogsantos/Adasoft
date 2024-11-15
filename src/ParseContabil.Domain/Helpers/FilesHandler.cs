@@ -35,13 +35,10 @@ namespace ParseContabil.Domain.Helpers
             if (!Directory.Exists(pathOutput))
                 Directory.CreateDirectory(pathOutput);
 
-            if(pathOutput.Any())
+            foreach (var file in filesOutput)
             {
-                foreach (var file in filesOutput)
-                {
-                    var fileOutput = Path.Combine(pathOutput, string.Concat(file.Key,"_", DateTime.Now.ToString("yyyymmddHHmmss"),".csv"));
-                    await File.WriteAllTextAsync(fileOutput,file.Value.ToString());
-                }
+                var fileOutput = Path.Combine(pathOutput, string.Concat(file.Key, "_", DateTime.Now.ToString("yyyymmddHHmmss"), ".csv"));
+                await File.WriteAllTextAsync(fileOutput, file.Value.ToString());
             }
         }
 
