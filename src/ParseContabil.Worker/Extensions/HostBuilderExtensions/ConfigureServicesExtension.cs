@@ -6,6 +6,7 @@ using ParseContabil.Domain.Interfaces.Services;
 using ParseContabil.Domain.Services;
 using ParseContabil.Infrastructure.Context;
 using ParseContabil.Infrastructure.Repositories;
+using ParseContabil.Worker.HealthChecks;
 
 namespace ParseContabil.Worker.Extensions.HostBuilderExtensions
 {
@@ -20,6 +21,8 @@ namespace ParseContabil.Worker.Extensions.HostBuilderExtensions
             });
             
             services.Configure<Configuration>(context.Configuration.GetSection("Configurations"));
+
+            services.AddSingleton<IHealthCheckPublisher, HealthCheckPublisher>();
             services.AddHealthChecks().AddCheck("Worker Health Check", () => HealthCheckResult.Healthy("Worker is running."));
 
             services.AddScoped<IRecordTypeRepository, RecordTypeRepository>();
